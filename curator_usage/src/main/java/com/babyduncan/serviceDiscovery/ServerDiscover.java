@@ -25,7 +25,7 @@ public class ServerDiscover {
 
         client = CuratorFrameworkFactory.newClient("localhost:2181", new ExponentialBackoffRetry(1000, 3));
         client.start();
-        serviceDiscovery = ServiceDiscoveryBuilder.builder(ExampleService.class).client(client).basePath(DiscoveryExample.PATH).build();
+        serviceDiscovery = ServiceDiscoveryBuilder.builder(ExampleService.class).client(client).basePath("/discovery").build();
         serviceDiscovery.start();
 
         ServiceProvider<ExampleService> provider = providers.get("babyduncan");
@@ -41,7 +41,7 @@ public class ServerDiscover {
             if (instance == null) {
                 System.err.println("No instances named: babyduncan");
             } else {
-                System.out.println("\t" + instance.getPayload().getDescription() + ": " + instance.buildUriSpec());
+                System.out.println("\t" + instance.getAddress() + ":" + instance.getPort() + ": " + instance.buildUriSpec());
             }
 
             Thread.sleep(2000);

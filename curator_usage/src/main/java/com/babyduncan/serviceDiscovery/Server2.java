@@ -21,10 +21,10 @@ public class Server2 {
 
         client = CuratorFrameworkFactory.newClient("localhost:2181", new ExponentialBackoffRetry(1000, 3));
         client.start();
-        serviceDiscovery = ServiceDiscoveryBuilder.builder(ExampleService.class).client(client).basePath(DiscoveryExample.PATH).build();
+        serviceDiscovery = ServiceDiscoveryBuilder.builder(ExampleService.class).client(client).basePath("/discovery").build();
         serviceDiscovery.start();
 
-        ExampleServer server = new ExampleServer(client, DiscoveryExample.PATH, "babyduncan", "server2");
+        ExampleServer server = new ExampleServer(client, "/discovery", "babyduncan", "2.2.2.2", 8081, "server2");
         server.start();
 
         System.out.println("server2 added");

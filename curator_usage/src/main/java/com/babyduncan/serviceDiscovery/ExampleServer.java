@@ -5,7 +5,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
-import org.apache.curator.x.discovery.UriSpec;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -19,15 +18,13 @@ public class ExampleServer implements Closeable {
     private final ServiceDiscovery<ExampleService> serviceDiscovery;
     private final ServiceInstance<ExampleService> thisInstance;
 
-    public ExampleServer(CuratorFramework client, String path, String serviceName, String description) throws Exception {
-        // in a real application, you'd have a convention of some kind for the URI layout
-        UriSpec uriSpec = new UriSpec("{scheme}://foobar.com:{port}");
+    public ExampleServer(CuratorFramework client, String path, String serviceName, String ip, int port, String description) throws Exception {
 
         thisInstance = ServiceInstance.<ExampleService>builder()
                 .name(serviceName)
                 .payload(new ExampleService())
-                .port((int) (65535 * Math.random())) // in a real application, you'd use a common port
-                .uriSpec(uriSpec)
+                .port(port)
+                .address(ip)
                 .build();
 
 
